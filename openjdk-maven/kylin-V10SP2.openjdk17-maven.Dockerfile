@@ -4,6 +4,6 @@ ARG BASE_IMAGE
 
 FROM ${BASE_IMAGE}
 
-RUN curl -sSL https://dlcdn.apache.org/maven/maven-3/3.9.11/binaries/apache-maven-3.9.11-bin.tar.gz | tar -xz -C /usr/local
+RUN curl -sSL https://dlcdn.apache.org/maven/maven-3/3.9.12/binaries/apache-maven-3.9.12-bin.tar.gz | tar -xz -C /usr/local
 
-ENV PATH=$PATH:/usr/local/apache-maven-3.9.11/bin/
+ENV PATH=$PATH:/usr/local/apache-maven-3.9.12/bin/

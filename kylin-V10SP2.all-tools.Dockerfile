@@ -36,8 +36,8 @@ ENV JAVA_HOME=/usr/local/openjdk8
 # ============================================
 # 安装 Maven
 # ============================================
-RUN curl -sSL https://dlcdn.apache.org/maven/maven-3/3.9.11/binaries/apache-maven-3.9.11-bin.tar.gz | tar -xz -C /usr/local && \
-    mv /usr/local/apache-maven-3.9.11 /usr/local/maven
+RUN curl -sSL https://dlcdn.apache.org/maven/maven-3/3.9.12/binaries/apache-maven-3.9.12-bin.tar.gz | tar -xz -C /usr/local && \
+    mv /usr/local/apache-maven-3.9.12 /usr/local/maven
 
 ENV MAVEN_HOME=/usr/local/maven
 ENV PATH=$PATH:$MAVEN_HOME/bin
