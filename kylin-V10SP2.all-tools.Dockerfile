@@ -8,7 +8,7 @@ FROM ${BASE_IMAGE}
 # 安装基础依赖
 # ============================================
 RUN yum install -y git curl make gcc gcc-c++ zlib-devel libffi-devel openssl-devel \
-    bzip2-devel readline-devel sqlite-devel xz-devel patch vim unzip && \
+    bzip2-devel readline-devel sqlite-devel xz-devel patch vim unzip jq && \
     yum clean all && \
     rm -rf /var/cache/yum
 
