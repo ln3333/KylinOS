@@ -8,7 +8,7 @@ FROM ${BASE_IMAGE}
 # 安装基础依赖
 # ============================================
 RUN yum install -y git curl make gcc gcc-c++ zlib-devel libffi-devel openssl-devel \
-    bzip2-devel readline-devel sqlite-devel xz-devel patch vim && \
+    bzip2-devel readline-devel sqlite-devel xz-devel patch vim unzip jq && \
     yum clean all && \
     rm -rf /var/cache/yum
 
@@ -41,6 +41,29 @@ RUN curl -sSL https://dlcdn.apache.org/maven/maven-3/3.9.12/binaries/apache-mave
 
 ENV MAVEN_HOME=/usr/local/maven
 ENV PATH=$PATH:$MAVEN_HOME/bin
+
+# ============================================
+# 安装 SonarScanner CLI（多版本共存）
+# - 默认 sonar-scanner -> 8.0.1
+# ============================================
+ARG SONAR_SCANNER_CLI_8_URL="https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-8.0.1.6346-linux-x64.zip"
+ARG SONAR_SCANNER_CLI_4_URL="https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.8.1.3023-linux.zip"
+
+RUN set -eux; \
+    mkdir -p /opt; \
+    curl -fsSL "$SONAR_SCANNER_CLI_8_URL" -o /tmp/sonar-scanner-cli-8.0.1.zip; \
+    unzip -q /tmp/sonar-scanner-cli-8.0.1.zip -d /opt; \
+    mv /opt/sonar-scanner-8.0.1.6346-linux-x64 /opt/sonar-scanner-cli-8.0.1; \
+    rm -f /tmp/sonar-scanner-cli-8.0.1.zip; \
+    \
+    curl -fsSL "$SONAR_SCANNER_CLI_4_URL" -o /tmp/sonar-scanner-cli-4.8.1.zip; \
+    unzip -q /tmp/sonar-scanner-cli-4.8.1.zip -d /opt; \
+    mv /opt/sonar-scanner-4.8.1.3023-linux /opt/sonar-scanner-cli-4.8.1; \
+    rm -f /tmp/sonar-scanner-cli-4.8.1.zip; \
+    \
+    ln -sf /opt/sonar-scanner-cli-8.0.1/bin/sonar-scanner /usr/local/bin/sonar-scanner-8.0.1; \
+    ln -sf /opt/sonar-scanner-cli-4.8.1/bin/sonar-scanner /usr/local/bin/sonar-scanner-4.8.1; \
+    ln -sf /opt/sonar-scanner-cli-8.0.1/bin/sonar-scanner /usr/local/bin/sonar-scanner
 
 # ============================================
 # 安装 pyenv 和 Python 多个版本
@@ -117,6 +140,13 @@ RUN echo "=== Java Versions ===" && \
     echo "" && \
     echo "=== Maven Version ===" && \
     /usr/local/maven/bin/mvn -version && \
+    echo "" && \
+    echo "=== SonarScanner CLI Versions ===" && \
+    sonar-scanner --version && \
+    echo "" && \
+    sonar-scanner-8.0.1 --version && \
+    echo "" && \
+    sonar-scanner-4.8.1 --version && \
     echo "" && \
     echo "=== Python Versions (pyenv) ===" && \
     eval "$(pyenv init -)" && pyenv versions && \
