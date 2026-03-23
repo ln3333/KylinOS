@@ -51,17 +51,19 @@ RUN eval "$(pyenv init -)" && \
 # ============================================
 # 安装 nvm 和 Node.js 20.19.5（所有用户可用）
 # ============================================
-# 创建 nvm 组并将 /opt/nvm 目录设为组可读
+# 创建 nvm 组
 RUN groupadd -r nvm && chmod 755 /opt
 
-# 安装 nvm 到 /opt/nvm（所有用户可读）
-ENV NVM_DIR=/opt/nvm
-ENV PATH=$NVM_DIR/versions/node/v20.19.5/bin:$PATH
-
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash && \
+# 安装 nvm 到默认位置，再移动到 /opt/nvm
+RUN unset NVM_DIR && \
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash && \
     mv /root/.nvm /opt/nvm && \
     chgrp -R nvm /opt/nvm && \
     chmod -R 755 /opt/nvm
+
+# 设置环境变量
+ENV NVM_DIR=/opt/nvm
+ENV PATH=$NVM_DIR/versions/node/v20.19.5/bin:$PATH
 
 # 设置 Node.js 版本
 RUN . "$NVM_DIR/nvm.sh" && \
