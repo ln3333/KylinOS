@@ -1,9 +1,13 @@
 # syntax=docker/dockerfile:1
 
-FROM ln3333/kylinos:v10-sp2-amd64-20260113
+FROM openeuler/openeuler:22.03
 
 # 安装基础依赖（不装 sqlite-devel，改用下方编译的 3.51 提供头文件/库）
 RUN yum install -y git curl wget make gcc gcc-c++ zlib-devel libffi-devel openssl-devel \
+    iputils \
+    net-tools \
+    telnet \
+    bind-utils \
     bzip2-devel readline-devel xz-devel patch vim unzip jq && \
     yum clean all && \
     rm -rf /var/cache/yum
