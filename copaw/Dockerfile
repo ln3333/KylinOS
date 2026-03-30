@@ -87,3 +87,19 @@ RUN echo 'export NVM_DIR="/opt/nvm"' > /etc/profile.d/nvm.sh && \
 RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm && \
     yum install -y google-chrome-stable_current_x86_64.rpm && \
     rm -f google-chrome-stable_current_x86_64.rpm
+
+# ============================================
+# 安装 LibreOffice 26.2.0
+# ============================================
+RUN wget -q https://mirror-hk.koddos.net/tdf/libreoffice/stable/26.2.2/rpm/x86_64/LibreOffice_26.2.2_Linux_x86-64_rpm.tar.gz && \
+    tar xzf LibreOffice_26.2.2_Linux_x86-64_rpm.tar.gz && \
+    yum install -y LibreOffice_26.2.2.2_Linux_x86-64_rpm/RPMS/*.rpm && \
+    rm -rf LibreOffice_26.2.2.2_Linux_x86-64_rpm LibreOffice_26.2.2_Linux_x86-64_rpm.tar.gz
+
+# ============================================
+# 安装 PDF/图像处理依赖
+# ============================================
+RUN yum install -y poppler-utils cairo cairo-gobject pango gdk-pixbuf2 libffi \
+    libjpeg-turbo-devel zlib-devel libtiff-devel openjpeg2 gcc python3-devel fontconfig && \
+    yum clean all && \
+    rm -rf /var/cache/yum
