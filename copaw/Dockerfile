@@ -97,9 +97,9 @@ RUN wget -q https://mirror-hk.koddos.net/tdf/libreoffice/stable/26.2.2/rpm/x86_6
     rm -rf LibreOffice_26.2.2.2_Linux_x86-64_rpm LibreOffice_26.2.2_Linux_x86-64_rpm.tar.gz
 
 # ============================================
-# 安装 PDF/图像处理依赖
+# 安装 PDF/图像处理依赖、tesseract
 # ============================================
 RUN yum install -y poppler-utils cairo cairo-gobject pango gdk-pixbuf2 libffi \
-    libjpeg-turbo-devel zlib-devel libtiff-devel openjpeg2 gcc python3-devel fontconfig && \
+    libjpeg-turbo-devel zlib-devel libtiff-devel openjpeg2 gcc python3-devel fontconfig tesseract tesseract-langpack-chi_sim && \
     yum clean all && \
     rm -rf /var/cache/yum
