@@ -89,12 +89,12 @@ RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.
     rm -f google-chrome-stable_current_x86_64.rpm
 
 # ============================================
-# 安装 LibreOffice 26.2.0
+# 安装 LibreOffice 25.8.7
 # ============================================
-RUN wget -q https://mirror-hk.koddos.net/tdf/libreoffice/stable/26.2.2/rpm/x86_64/LibreOffice_26.2.2_Linux_x86-64_rpm.tar.gz && \
-    tar xzf LibreOffice_26.2.2_Linux_x86-64_rpm.tar.gz && \
-    yum install -y LibreOffice_26.2.2.2_Linux_x86-64_rpm/RPMS/*.rpm && \
-    rm -rf LibreOffice_26.2.2.2_Linux_x86-64_rpm LibreOffice_26.2.2_Linux_x86-64_rpm.tar.gz
+RUN wget -q https://mirror-hk.koddos.net/tdf/libreoffice/stable/25.8.7/rpm/x86_64/LibreOffice_25.8.7_Linux_x86-64_rpm.tar.gz && \
+    tar xzf LibreOffice_25.8.7_Linux_x86-64_rpm.tar.gz && \
+    yum install -y LibreOffice_25.8.7.3_Linux_x86-64_rpm/RPMS/*.rpm && \
+    rm -rf LibreOffice_25.8.7.3_Linux_x86-64_rpm LibreOffice_25.8.7_Linux_x86-64_rpm.tar.gz
 
 # ============================================
 # 安装 PDF/图像处理依赖、tesseract
