@@ -12,9 +12,11 @@ openjdk8_maven3_9_image="$dockerhub_repo:v10-sp2-amd64-openjdk8-maven3.9-$build_
 openjdk17_maven3_9_image="$dockerhub_repo:v10-sp2-amd64-openjdk17-maven3.9-$build_date"
 
 dragonwell_extended8_image="$dockerhub_repo:v10-sp2-amd64-dragonwell-extended8-$build_date"
+dragonwell_extended11_image="$dockerhub_repo:v10-sp2-amd64-dragonwell-extended11-$build_date"
 dragonwell_extended21_image="$dockerhub_repo:v10-sp2-amd64-dragonwell-extended21-$build_date"
 
 dragonwell_extended8_maven3_9_image="$dockerhub_repo:v10-sp2-amd64-dragonwell-extended8-maven3.9-$build_date"
+dragonwell_extended11_maven3_9_image="$dockerhub_repo:v10-sp2-amd64-dragonwell-extended11-maven3.9-$build_date"
 dragonwell_extended21_maven3_9_image="$dockerhub_repo:v10-sp2-amd64-dragonwell-extended21-maven3.9-$build_date"
 
 oraclejdk8u202_image="$dockerhub_repo:v10-sp2-amd64-oraclejdk8u202-$build_date"
