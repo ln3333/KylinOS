@@ -4,7 +4,7 @@ ARG BASE_IMAGE
 
 FROM ${BASE_IMAGE}
 
-ARG DRAGONWELL_EXTENDED_8_URL="https://dragonwell.oss-cn-shanghai.aliyuncs.com/8.27.26-test-dragonwell_extended/Alibaba_Dragonwell_Extended_8.27.26_x64_linux.tar.gz"
+ARG DRAGONWELL_EXTENDED_8_URL="https://dragonwell.oss-cn-shanghai.aliyuncs.com/8.29.28/Alibaba_Dragonwell_Extended_8.29.28_x64_linux.tar.gz"
 
 RUN set -eux; \
     tmp="/tmp/dragonwell-extended8.tar.gz"; \
