@@ -30,14 +30,62 @@ RUN curl -sSL https://github.com/adoptium/temurin11-binaries/releases/download/j
 ENV JAVA_HOME_11=/usr/local/openjdk11
 ENV PATH=$PATH:$JAVA_HOME_11/bin
 
+# ============================================
+# 安装 Dragonwell Extended 8
+# ============================================
+ARG DRAGONWELL_EXTENDED_8_URL="https://dragonwell.oss-cn-shanghai.aliyuncs.com/8.27.26-test-dragonwell_extended/Alibaba_Dragonwell_Extended_8.27.26_x64_linux.tar.gz"
+
+RUN set -eux; \
+    tmp="/tmp/dragonwell-extended8.tar.gz"; \
+    curl -fsSL "${DRAGONWELL_EXTENDED_8_URL}" -o "${tmp}"; \
+    topdir="$(tar -tzf "${tmp}" | head -n 1 | cut -d/ -f1)"; \
+    tar -xzf "${tmp}" -C /usr/local; \
+    rm -f "${tmp}"; \
+    mv "/usr/local/${topdir}" /usr/local/dragonwell-extended8
+
+ENV JAVA_HOME_DRAGONWELL_8=/usr/local/dragonwell-extended8
+ENV PATH=$PATH:$JAVA_HOME_DRAGONWELL_8/bin
+
+# ============================================
+# 安装 Dragonwell Extended 11
+# ============================================
+ARG DRAGONWELL_EXTENDED_11_URL="https://dragonwell.oss-cn-shanghai.aliyuncs.com/11.0.31.28.11/Alibaba_Dragonwell_Extended_11.0.31.28.11_x64_linux.tar.gz"
+
+RUN set -eux; \
+    tmp="/tmp/dragonwell-extended11.tar.gz"; \
+    curl -fsSL "${DRAGONWELL_EXTENDED_11_URL}" -o "${tmp}"; \
+    topdir="$(tar -tzf "${tmp}" | head -n 1 | cut -d/ -f1)"; \
+    tar -xzf "${tmp}" -C /usr/local; \
+    rm -f "${tmp}"; \
+    mv "/usr/local/${topdir}" /usr/local/dragonwell-extended11
+
+ENV JAVA_HOME_DRAGONWELL_11=/usr/local/dragonwell-extended11
+ENV PATH=$PATH:$JAVA_HOME_DRAGONWELL_11/bin
+
+# ============================================
+# 安装 Dragonwell Extended 21
+# ============================================
+ARG DRAGONWELL_EXTENDED_21_URL="https://dragonwell.oss-cn-shanghai.aliyuncs.com/21.0.9.0.9%2B10/Alibaba_Dragonwell_Extended_21.0.9.0.9.10_x64_linux.tar.gz"
+
+RUN set -eux; \
+    tmp="/tmp/dragonwell-extended21.tar.gz"; \
+    curl -fsSL "${DRAGONWELL_EXTENDED_21_URL}" -o "${tmp}"; \
+    topdir="$(tar -tzf "${tmp}" | head -n 1 | cut -d/ -f1)"; \
+    tar -xzf "${tmp}" -C /usr/local; \
+    rm -f "${tmp}"; \
+    mv "/usr/local/${topdir}" /usr/local/dragonwell-extended21
+
+ENV JAVA_HOME_DRAGONWELL_21=/usr/local/dragonwell-extended21
+ENV PATH=$PATH:$JAVA_HOME_DRAGONWELL_21/bin
+
 # 设置默认JAVA_HOME为OpenJDK 8
 ENV JAVA_HOME=/usr/local/openjdk8
 
 # ============================================
 # 安装 Maven
 # ============================================
-RUN curl -sSL https://dlcdn.apache.org/maven/maven-3/3.9.12/binaries/apache-maven-3.9.12-bin.tar.gz | tar -xz -C /usr/local && \
-    mv /usr/local/apache-maven-3.9.12 /usr/local/maven
+RUN curl -sSL https://dlcdn.apache.org/maven/maven-3/3.9.16/binaries/apache-maven-3.9.16-bin.tar.gz | tar -xz -C /usr/local && \
+    mv /usr/local/apache-maven-3.9.16 /usr/local/maven
 
 ENV MAVEN_HOME=/usr/local/maven
 ENV PATH=$PATH:$MAVEN_HOME/bin
@@ -124,9 +172,12 @@ RUN echo '#!/bin/bash' > /usr/local/bin/switch-java && \
     echo 'case "$1" in' >> /usr/local/bin/switch-java && \
     echo '  openjdk8) export JAVA_HOME=/usr/local/openjdk8 ;;' >> /usr/local/bin/switch-java && \
     echo '  openjdk11) export JAVA_HOME=/usr/local/openjdk11 ;;' >> /usr/local/bin/switch-java && \
-    echo '  *) echo "Usage: switch-java {openjdk8|openjdk11}"; exit 1 ;;' >> /usr/local/bin/switch-java && \
+    echo '  dragonwell8) export JAVA_HOME=/usr/local/dragonwell-extended8 ;;' >> /usr/local/bin/switch-java && \
+    echo '  dragonwell11) export JAVA_HOME=/usr/local/dragonwell-extended11 ;;' >> /usr/local/bin/switch-java && \
+    echo '  dragonwell21) export JAVA_HOME=/usr/local/dragonwell-extended21 ;;' >> /usr/local/bin/switch-java && \
+    echo '  *) echo "Usage: switch-java {openjdk8|openjdk11|dragonwell8|dragonwell11|dragonwell21}"; exit 1 ;;' >> /usr/local/bin/switch-java && \
     echo 'esac' >> /usr/local/bin/switch-java && \
-    echo 'export PATH=$(echo $PATH | sed -E "s|/usr/local/openjdk[^:]*/bin:||g"):$JAVA_HOME/bin' >> /usr/local/bin/switch-java && \
+    echo 'export PATH=$(echo $PATH | sed -E "s|/usr/local/(openjdk|dragonwell-extended)[^:]*/bin:||g"):$JAVA_HOME/bin' >> /usr/local/bin/switch-java && \
     echo 'java -version' >> /usr/local/bin/switch-java && \
     chmod +x /usr/local/bin/switch-java
 
@@ -137,6 +188,12 @@ RUN echo "=== Java Versions ===" && \
     /usr/local/openjdk8/bin/java -version && \
     echo "" && \
     /usr/local/openjdk11/bin/java -version && \
+    echo "" && \
+    /usr/local/dragonwell-extended8/bin/java -version && \
+    echo "" && \
+    /usr/local/dragonwell-extended11/bin/java -version && \
+    echo "" && \
+    /usr/local/dragonwell-extended21/bin/java -version && \
     echo "" && \
     echo "=== Maven Version ===" && \
     /usr/local/maven/bin/mvn -version && \
